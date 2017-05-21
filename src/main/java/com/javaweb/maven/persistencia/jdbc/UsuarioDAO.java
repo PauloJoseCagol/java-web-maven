@@ -9,13 +9,15 @@ import java.util.List;
 
 import com.javaweb.maven.persistencia.entidade.Usuario;
 
+import junit.runner.ReloadingTestSuiteLoader;
+
 public class UsuarioDAO {
 
 	Connection con = ConexaoFactory.getConnection();
 
 	public void cadastrar(Usuario usu) {
 		// TODO Auto-generated method stub
-		String sql = "insert into usuario (nome, login,senha) values (?,?,?)";
+		String sql = "insert into usuario (nome, login,senha) values (?,?,MD5(?))";
 
 		try (PreparedStatement stmt = con.prepareStatement(sql)) {
 			stmt.setString(1, usu.getNome());
@@ -32,7 +34,7 @@ public class UsuarioDAO {
 
 	public void alterar(Usuario usu) {
 		// TODO Auto-generated method stub
-		String sql = "update usuario set nome=?, login=?, senha=? where id =?";
+		String sql = "update usuario set nome=?, login=?, senha=MD5(?) where id =?";
 
 		try (PreparedStatement stmt = con.prepareStatement(sql)) {
 			stmt.setString(1, usu.getNome());
@@ -65,7 +67,7 @@ public class UsuarioDAO {
 
 	public void salvar(Usuario usuario) {
 
-		if (usuario.getId() != null) {
+		if (usuario.getId() != null && usuario.getId() != 0) {
 			alterar(usuario);
 			System.out.println("Usuario alterado!");
 		} else {
@@ -129,6 +131,29 @@ public class UsuarioDAO {
 			// TODO: handle exception
 			throw new RuntimeException(e);
 		}
+	}
+
+	public Usuario autenticar(Usuario usuConstulta) {
+		String sql = "select * from usuario where login=? and senha=MD5(?)";
+		Usuario resultUsu = null;
+		try (PreparedStatement stmt = con.prepareStatement(sql)) {
+			stmt.setString(1, usuConstulta.getLogin());
+			stmt.setString(2, usuConstulta.getSenha());
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				resultUsu = new Usuario();
+				resultUsu.setId(rs.getInt("id"));
+				resultUsu.setNome(rs.getString("nome"));
+				resultUsu.setLogin(rs.getString("login"));
+				resultUsu.setSenha(rs.getString("senha"));
+				return resultUsu;
+			}
+			
+		} catch (SQLException e) {
+			// TODO: handle exception
+			throw new RuntimeException(e);
+		}
+		return null;
 	}
 
 }

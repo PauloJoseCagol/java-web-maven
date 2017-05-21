@@ -7,6 +7,13 @@ public class Usuario {
 	private String nome;
 	private String senha;
 
+	
+	
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", login=" + login + ", nome=" + nome + ", senha=" + senha + "]";
+	}
+
 	public Integer getId() {
 		return id;
 	}

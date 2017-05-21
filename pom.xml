@@ -25,6 +25,14 @@
 			<version>9.1-901-1.jdbc4</version>
 		</dependency>
 		
+		<!-- Dependência HttpServlet -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
+			<scope>test</scope>
+		</dependency>
+		
 	</dependencies>
 	<build>
 		<finalName>javawebmaven</finalName>

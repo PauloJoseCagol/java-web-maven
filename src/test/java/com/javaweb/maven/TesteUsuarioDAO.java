@@ -11,7 +11,20 @@ public class TesteUsuarioDAO {
 	public static void main(String[] args) {
 		// testeSalvar();
 		// testeFindById();
-		testeGetUsuarios();
+		//testeGetUsuarios();
+		testeAutenticar();
+	}
+
+	private static void testeAutenticar() {
+		// TODO Auto-generated method stub
+		UsuarioDAO usuDao = new UsuarioDAO();
+		
+		Usuario usu = new Usuario();
+		usu.setLogin("Login teste");
+		usu.setSenha("Senha teste");
+		
+		System.out.println(usuDao.autenticar(usu));
+		
 	}
 
 	private static void testeGetUsuarios() {
